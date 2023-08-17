@@ -14,7 +14,7 @@ composer require mitoop/laravel-snowflake
 php artisan vendor:publish --provider="Mitoop\LaravelSnowflake\ServiceProvider"
 ```
 
-`laravel-snowflake.php`配置文件
+`snowflake.php`配置文件
 ```php
 return [
     // 纪元时间
