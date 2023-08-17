@@ -20,5 +20,15 @@
         "psr-4": {
             "Mitoop\\LaravelSnowflake\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "Snowflake": "Mitoop\\LaravelSnowflake\\Facades\\Snowflake"
+            },
+            "providers": [
+                "Mitoop\\LaravelSnowflake\\ServiceProvider"
+            ]
+        }
     }
 }
