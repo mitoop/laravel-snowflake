@@ -2,7 +2,9 @@
 
 namespace Mitoop\LaravelSnowflake;
 
+use Closure;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Mitoop\Snowflake\Snowflake;
 
@@ -28,6 +30,14 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
         });
 
         $this->app->alias(Snowflake::class, 'snowflake');
+
+        Blueprint::mixin(new class
+        {
+            public function snowflake(): Closure
+            {
+                return fn (string $column = 'id') => $this->unsignedBigInteger($column);
+            }
+        });
     }
 
     public function boot(): void
