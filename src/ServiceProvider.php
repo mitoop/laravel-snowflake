@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Illuminate\Support\Str;
 use Mitoop\Snowflake\Snowflake;
 
 class ServiceProvider extends LaravelServiceProvider implements DeferrableProvider
@@ -38,6 +39,12 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
                 return fn (string $column = 'id') => $this->unsignedBigInteger($column);
             }
         });
+
+        /**
+         * @param $prefix
+         * @return string
+         */
+        Str::macro('snowflakeId', fn ($prefix = '') => $prefix.app('snowflake')->id());
     }
 
     public function boot(): void
