@@ -32,20 +32,6 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
         });
 
         $this->app->alias(Snowflake::class, 'snowflake');
-
-        Blueprint::mixin(new class
-        {
-            public function snowflake(): Closure
-            {
-                return fn (string $column = 'id') => $this->unsignedBigInteger($column);
-            }
-        });
-
-        /**
-         * @param $prefix
-         * @return string
-         */
-        Str::macro('snowflakeId', fn ($prefix = '') => $prefix.app('snowflake')->id());
     }
 
     public function boot(): void
@@ -57,6 +43,20 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
 
             $this->mergeConfigFrom($path, 'laravel-snowflake');
         }
+
+        /**
+         * @param $prefix
+         * @return string
+         */
+        Str::macro('snowflakeId', fn ($prefix = '') => $prefix.app('snowflake')->id());
+
+        Blueprint::mixin(new class
+        {
+            public function snowflake(): Closure
+            {
+                return fn (string $column = 'id') => $this->unsignedBigInteger($column);
+            }
+        });
     }
 
     public function provides(): array
