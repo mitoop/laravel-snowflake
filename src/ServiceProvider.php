@@ -3,13 +3,12 @@
 namespace Mitoop\LaravelSnowflake;
 
 use Closure;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Illuminate\Support\Str;
 use Mitoop\Snowflake\Snowflake;
 
-class ServiceProvider extends LaravelServiceProvider implements DeferrableProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     public function register(): void
     {
@@ -32,17 +31,6 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
         });
 
         $this->app->alias(Snowflake::class, 'snowflake');
-    }
-
-    public function boot(): void
-    {
-        if ($this->app->runningInConsole()) {
-            $path = realpath(__DIR__.'/../config/laravel-snowflake.php');
-
-            $this->publishes([$path => config_path('laravel-snowflake.php')], 'config');
-
-            $this->mergeConfigFrom($path, 'laravel-snowflake');
-        }
 
         /**
          * @param $prefix
@@ -59,9 +47,15 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
         });
     }
 
-    public function provides(): array
+    public function boot(): void
     {
-        return ['snowflake', Snowflake::class];
+        if ($this->app->runningInConsole()) {
+            $path = realpath(__DIR__.'/../config/laravel-snowflake.php');
+
+            $this->publishes([$path => config_path('laravel-snowflake.php')], 'config');
+
+            $this->mergeConfigFrom($path, 'laravel-snowflake');
+        }
     }
 
     protected function config($key, $default = null)
