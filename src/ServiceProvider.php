@@ -24,8 +24,8 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
                 $snowflake->setWorkerId($this->config('worker_id'));
             }
 
-            if (! is_null($this->config('sequence_strategy'))) {
-                $snowflake->setSequenceStrategy(new ($this->config('sequence_strategy')));
+            if (is_callable($this->config('sequence_strategy'))) {
+                $snowflake->setSequenceStrategy(call_user_func($this->config('sequence_strategy')));
             }
 
             return $snowflake;
