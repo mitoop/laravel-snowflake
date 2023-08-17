@@ -50,16 +50,16 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $path = realpath(__DIR__.'/../config/laravel-snowflake.php');
+            $path = realpath(__DIR__ . '/../config/snowflake.php');
 
-            $this->publishes([$path => config_path('laravel-snowflake.php')], 'config');
+            $this->publishes([$path => config_path('snowflake.php')], 'config');
 
-            $this->mergeConfigFrom($path, 'laravel-snowflake');
+            $this->mergeConfigFrom($path, 'snowflake');
         }
     }
 
     protected function config($key, $default = null)
     {
-        return config("laravel-snowflake.$key", $default);
+        return config("snowflake.$key", $default);
     }
 }
