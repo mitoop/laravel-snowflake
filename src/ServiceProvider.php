@@ -13,8 +13,7 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
 {
     public function register(): void
     {
-        $this->app->singleton(Snowflake::class, static function () {
-
+        $this->app->singleton(Snowflake::class, function () {
             $snowflake = new Snowflake($this->config('epoch'));
 
             if (! is_null($this->config('datacenter_id'))) {
@@ -28,6 +27,8 @@ class ServiceProvider extends LaravelServiceProvider implements DeferrableProvid
             if (! is_null($this->config('sequence_strategy'))) {
                 $snowflake->setSequenceStrategy(new ($this->config('sequence_strategy')));
             }
+
+            return $snowflake;
         });
 
         $this->app->alias(Snowflake::class, 'snowflake');
