@@ -1,8 +1,8 @@
 # Laravel Snowflake
 
 ## 环境需求
-- PHP: `^8.1`
-- Laravel: `^10.3.0`
+- PHP: `^8.2`
+- Laravel: `^11`
 
 ## 安装
 ```shell

@@ -10,11 +10,11 @@
     ],
     "require": {
         "php": "^8.1",
-        "mitoop/snowflake": "^1.0",
-        "illuminate/support": "^10.3.0"
+        "mitoop/snowflake": "^1.0,1",
+        "illuminate/support": "^11"
     },
     "require-dev": {
-        "laravel/framework": "^10.3.0"
+        "laravel/framework": "^11"
     },
     "autoload": {
         "psr-4": {
