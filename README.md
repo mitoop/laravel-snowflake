@@ -23,7 +23,7 @@ return [
     'datacenter_id' => null,
     // 工作机器id 范围:[0-31]. 为 null时, 随机取[0-31]的值
     'worker_id' => null,
-    // 序列号生成策略类 为 null 时, 使用随机数. 自定义策略请返回闭包.
+    // 序列号生成策略类 为 null 时, 使用随机数. 其他请指定类名如: RedisSequenceStrategy::class
     'sequence_strategy' => null,
 ];
 ```

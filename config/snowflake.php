@@ -5,4 +5,5 @@ return [
     'datacenter_id' => null,
     'worker_id' => null,
     'sequence_strategy' => null,
+    'redis_connection' => 'default',
 ];

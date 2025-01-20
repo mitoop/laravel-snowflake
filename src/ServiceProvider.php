@@ -4,14 +4,20 @@ namespace Mitoop\LaravelSnowflake;
 
 use Closure;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Illuminate\Support\Str;
+use Mitoop\Snowflake\RedisSequenceStrategy;
 use Mitoop\Snowflake\Snowflake;
 
 class ServiceProvider extends LaravelServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(RedisSequenceStrategy::class, function () {
+            return new RedisSequenceStrategy(Redis::connection($this->config('redis_connection'))->client());
+        });
+
         $this->app->singleton(Snowflake::class, function () {
             $snowflake = new Snowflake($this->config('epoch'));
 
@@ -23,8 +29,8 @@ class ServiceProvider extends LaravelServiceProvider
                 $snowflake->setWorkerId($this->config('worker_id'));
             }
 
-            if (is_callable($this->config('sequence_strategy'))) {
-                $snowflake->setSequenceStrategy(call_user_func($this->config('sequence_strategy')));
+            if (! is_null($this->config('sequence_strategy'))) {
+                $snowflake->setSequenceStrategy($this->app->make($this->config('sequence_strategy')));
             }
 
             return $snowflake;
@@ -33,7 +39,7 @@ class ServiceProvider extends LaravelServiceProvider
         $this->app->alias(Snowflake::class, 'snowflake');
 
         /**
-         * @param $prefix
+         * @param  $prefix
          * @return string
          */
         Str::macro('snowflakeId', fn ($prefix = '') => $prefix.app('snowflake')->id());
